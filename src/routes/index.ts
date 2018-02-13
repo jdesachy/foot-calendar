@@ -17,12 +17,16 @@ export class IndexRoute extends BaseRoute {
    * @static
    */
   public static create(router: Router) {
-    //log
+    
     console.log("[IndexRoute::create] Creating index route.");
 
-    //add home page route
     router.get("/", (req: Request, res: Response, next: NextFunction) => {
       new IndexRoute().index(req, res, next);
+    });
+
+    router.get("/calendar/:day?", (req: Request, res: Response, next: NextFunction) => {
+      var day = req.params.day;
+      new IndexRoute().index(req, res, next, day);
     });
   }
 
@@ -36,12 +40,12 @@ export class IndexRoute extends BaseRoute {
     super();
   }
 
-  public index(req: Request, res: Response, next: NextFunction) {
+  public index(req: Request, res: Response, next: NextFunction, day?: string) {
     let calendar: Calendar;
     calendar = new Calendar();
 
     // Json response
-    res.json({ calendar: calendar.get() });
+    res.json({ calendar: calendar.get(day) });
   }
 
 }

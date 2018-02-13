@@ -4,7 +4,7 @@ export class DateFormat {
 
     public format(dateToFormat: Date): string {
         var day = dateToFormat.getDate();
-        var monthIndex = dateToFormat.getMonth() + 1;
+        var monthIndex = dateToFormat.getMonth()+1; // Redécalage de 1
         var year = dateToFormat.getFullYear();
 
         var dayToString;
