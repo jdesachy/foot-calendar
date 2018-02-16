@@ -32,9 +32,7 @@ class UserTest {
 
   constructor() {
     this.data = {
-      email: "foo@bar.com",
-      firstName: "Brian",
-      lastName: "Love"
+      nickName: "Brian"
     };
   }
 
@@ -44,15 +42,7 @@ class UserTest {
     return new UserTest.User(this.data).save().then(result => {
       //verify _id property exists
       result._id.should.exist;
-
-      //verify email
-      result.email.should.equal(this.data.email);
-
-      //verify firstName
-      result.firstName.should.equal(this.data.firstName);
-
-      //verify lastName
-      result.lastName.should.equal(this.data.lastName);
+      result.nickName.should.equal(this.data.nickName);
     });
   }
 }

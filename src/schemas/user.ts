@@ -1,10 +1,8 @@
 import { Schema } from "mongoose";
 
 export var userSchema: Schema = new Schema({
-  createdAt: Date,
-  email: String,
-  firstName: String,
-  lastName: String
+  nickName: String,
+  createdAt: Date
 });
 userSchema.pre("save", function(next) {
   if (!this.createdAt) {
