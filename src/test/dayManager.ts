@@ -61,7 +61,7 @@ class DayManagerTest {
 
         var users: string[];
         users = [];
-        dayManager.read("01-01-2018", users, function(users: string[], days: IDayModel[]){
+        dayManager.read("01-01-2018", function(days: IDayModel[]){
             var assert = require("assert");
             console.log("result from test : " + days);
             assert.equal(days[0].id, "01-01-2018", "first day id read should be 01-01-2018");

@@ -1,5 +1,5 @@
 import { DateFormat } from "./dateformat";
-import { DayManager } from "../api/dayManager";
+import { User } from "./user";
 
 export class CalendarDay {
 
@@ -9,9 +9,9 @@ export class CalendarDay {
 
     public next: string;
 
-    public users: string[];
+    public users: User[];
 
-    constructor(day: string){
+    constructor(day: string, users : User[]){
         let dateformat: DateFormat;
         dateformat = new DateFormat();
 
@@ -26,7 +26,7 @@ export class CalendarDay {
         nextDate = this.getOffset(actualDate, 1);
         this.next = dateformat.format(nextDate);
 
-        this.updateUsers(day);
+        this.users = users;
     }
 
     private getOffset(date: Date, offset: number){
@@ -45,13 +45,4 @@ export class CalendarDay {
         return new Date(yearN, monthN, dayN, 12, 0, 0, 0);
     }
 
-    private updateUsers(day: string){
-        this.users = [];
-        new DayManager().read(day, this.users, function(users, days){
-            console.log("read callback :" + days);
-            days.forEach(function(d){
-                users.push(d.user);
-            });
-        });
-    }
 }

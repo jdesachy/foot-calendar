@@ -1,5 +1,9 @@
 import { DateFormat } from "./dateformat";
 import { CalendarDay } from "./calendarDay";
+import { daySchema } from "../schemas/day";
+import { DayManager } from "../api/dayManager";
+import { User } from "./user";
+import { UserDao } from "./userDao";
 
 export class Calendar {
 
@@ -8,27 +12,32 @@ export class Calendar {
     constructor(){
     }
 
-    public get(day? : string){
+    public get(cal: CalendarDay[], callback : (cal: CalendarDay[]) => void, day? : string){
         if(!day){
             let dateformat: DateFormat;
             dateformat = new DateFormat();
             day = dateformat.format(new Date());
         }
 
-        this.days = [];
-        this.days.push(new CalendarDay(day));
-        this.days.push(new CalendarDay(this.days[0].next));
-        this.days.push(new CalendarDay(this.days[1].next));
-        this.days.push(new CalendarDay(this.days[2].next));
-        this.days.push(new CalendarDay(this.days[3].next));
-        this.days.push(new CalendarDay(this.days[4].next));
-        this.days.push(new CalendarDay(this.days[5].next));
-        return this.days;
-    }
+        
+        new DayManager().read(day, function(days){
+            var users: User[];
+            users = [];
+            var userDao = new UserDao();
+            days.forEach(function(d){
+                var name = await userDao.readNameFromId(d.user);
+                console.log("dao return " + name);
+                users.push(new User(d.user, this.name, d.participate));
+            });
 
-    private getDateOffset(offset: number){
-        var newDate = new Date();
-        newDate.setDate(new Date().getDate() + offset)
-        return newDate;
-      }
+            var actual = new CalendarDay(day, users);
+            cal.push(actual);
+            if( cal.length <= 7 ){
+                new Calendar().get(cal, callback, actual.next);
+            }else{
+                callback(cal);
+            }
+            
+        });
+    }
 }

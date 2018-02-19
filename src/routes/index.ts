@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import { Calendar } from "./../api/calendar";
 import { DayManager } from "../api/dayManager";
+import { CalendarDay } from "../api/calendarDay";
 
 /**
  * / route
@@ -57,26 +58,23 @@ export class IndexRoute extends BaseRoute {
     let calendar: Calendar;
     calendar = new Calendar();
 
-    // Json response
-    res.json({ calendar: calendar.get(day) });
+    var cal: CalendarDay[];
+    cal = [];
+    calendar.get(cal, function(cal: CalendarDay[]){
+      res.json({ calendar: cal });
+    }, day);
+
   }
 
   public add(req: Request, res: Response, next: NextFunction, day: string, user: string) {
     
     new DayManager().suscribe(day, user);
-
-    let calendar: Calendar;
-    calendar = new Calendar();
-    console.log(day + ", " + user);    
-    res.json({ calendar: calendar.get(day) });
+    res.json({ status: "ok" });
+    
   }
 
-  public remove(req: Request, res: Response, next: NextFunction, day: string, user: string) {
-    let calendar: Calendar;
-    calendar = new Calendar();
-
-    console.log(day + ", " + user);
-    // Json response
-    res.json({ calendar: calendar.get(day) });
+  public remove(req: Request, res: Response, next: NextFunction, day: string, userId: string) {
+    new DayManager().unsuscribe(day, userId);
+    res.json({ status: "ok" });
   }
 }
