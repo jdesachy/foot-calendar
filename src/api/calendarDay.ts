@@ -1,13 +1,14 @@
 import { DateFormat } from "./dateformat";
 import { User } from "./user";
+import { Day } from "./day";
 
 export class CalendarDay {
 
-    public id: string;
+    public now: Day;
 
-    public previous: string;
+    public previous: Day;
 
-    public next: string;
+    public next: Day;
 
     public users: User[];
 
@@ -15,16 +16,15 @@ export class CalendarDay {
         let dateformat: DateFormat;
         dateformat = new DateFormat();
 
-        this.id = day;
-
         let actualDate: Date;
         let previousDate: Date;
         let nextDate: Date;
         actualDate = this.parseDate(day);
+        this.now = new Day(actualDate);
         previousDate = this.getOffset(actualDate, -1);
-        this.previous = dateformat.format(previousDate);
+        this.previous = new Day(previousDate);
         nextDate = this.getOffset(actualDate, 1);
-        this.next = dateformat.format(nextDate);
+        this.next = new Day(nextDate);
 
         this.users = users;
     }

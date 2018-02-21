@@ -58,16 +58,6 @@ class DayManagerTest {
     public suscribeDayExistingUser(){
         var dayManager = new DayManager();
         dayManager.suscribe("01-01-2018", "toto");
-
-        var users: string[];
-        users = [];
-        dayManager.read("01-01-2018", function(days: IDayModel[]){
-            var assert = require("assert");
-            console.log("result from test : " + days);
-            assert.equal(days[0].id, "01-01-2018", "first day id read should be 01-01-2018");
-            assert.equal(days[0].user, "toto", "first day user read should be toto");
-        });
-
     }
 
 }

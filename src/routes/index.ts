@@ -3,6 +3,10 @@ import { BaseRoute } from "./route";
 import { Calendar } from "./../api/calendar";
 import { DayManager } from "../api/dayManager";
 import { CalendarDay } from "../api/calendarDay";
+import { WeatherData } from "../api/weatherData";
+import { DateFormat } from "../api/dateformat";
+import { UserDao } from "../api/userdao";
+import { IUserModel } from "../models/user";
 
 /**
  * / route
@@ -61,20 +65,51 @@ export class IndexRoute extends BaseRoute {
     var cal: CalendarDay[];
     cal = [];
     calendar.get(cal, function(cal: CalendarDay[]){
-      res.json({ calendar: cal });
+
+      const http = require('http');
+      
+      http.get('http://api.apixu.com/v1/forecast.json?key=28c3c44617e84a4f93b102942182002&q=Archamps&days=7', (resp) => {
+        let data = '';
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+        resp.on('end', () => {
+          var weatherResult = JSON.parse(data);
+          var index = 0;
+          for(let d of weatherResult.forecast.forecastday){
+            var w = new WeatherData();
+            w.min = d.day.mintemp_c;
+            w.max = d.day.maxtemp_c;
+            w.image = "http:" + d.day.condition.icon;
+
+            var dateformat = new DateFormat();
+            var id = dateformat.format(new Date(d.date));
+            for(let c of cal){
+              if(c.now.id == id){
+                c.now.weather = w;
+              }
+            }
+          }
+          res.json({ calendar: cal });
+        });
+        }).on("error", (err) => {
+          console.log("Error: " + err.message);
+      });
     }, day);
 
   }
 
   public add(req: Request, res: Response, next: NextFunction, day: string, user: string) {
-    
     new DayManager().suscribe(day, user);
-    res.json({ status: "ok" });
-    
+    new UserDao().readAll(function(result: IUserModel[]){
+      res.json({ status: "ok", users: result });
+    });
   }
 
   public remove(req: Request, res: Response, next: NextFunction, day: string, userId: string) {
     new DayManager().unsuscribe(day, userId);
-    res.json({ status: "ok" });
+    new UserDao().readAll(function(result: IUserModel[]){
+      res.json({ status: "ok", users: result });
+    });
   }
 }

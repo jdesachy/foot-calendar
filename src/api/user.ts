@@ -1,13 +1,10 @@
 export class User {
 
-    id: string;
-
     nickName: string;
 
     participate: boolean;
 
-    constructor(id: string, nickName: string, participate){
-        this.id = id;
+    constructor(nickName: string, participate){
         this.nickName = nickName;
         this.participate = participate;
     }
