@@ -82,4 +82,16 @@ export class DayManager {
             }
         });
     }
+
+    remove(user: string){
+        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
+        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        
+        var Day = connection.model<IDayModel>("Day", daySchema);
+        Day.find({user: user}, function(err, dRes){
+            dRes.forEach(function(d){
+                d.remove();
+            });
+        });
+    }
 }

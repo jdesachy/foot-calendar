@@ -35,7 +35,7 @@ export class Calendar {
             var inc = 0;
             var callbackCalendar = function(cal: CalendarDay[], callback : (cal: CalendarDay[])=>void) {
                 var actualDay = new CalendarDay(day, users);
-                if(cal.length <= 7){
+                if(cal.length <= 5){
                     cal.push(actualDay);
                     new Calendar().get(cal, callback, actualDay.next.id);
                 }else{

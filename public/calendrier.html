@@ -1,0 +1,45 @@
+<html ng-app="calApp">
+<head>
+    <script type="text/javascript" src="resources/js/lib/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="resources/js/lib/bootstrap.min.js" ></script>
+    <script type="text/javascript" src="resources/js/lib/bootstrap.bundle.min.js" ></script>
+
+    <link rel="stylesheet" type="text/css" href="resources/css/calendar.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/fontawesome/fontawesome-all.min.css">
+    <meta charset="utf-8">
+</head>
+<body ng-controller="calCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 move" ng-click="loadCal(days[0].previous.id)"><</div>
+            <div class="col-md-1" ng-repeat="d in days">
+                <span>{{d.now.fullName}}</span>
+                <span ng-show="d.now.weather.image"><img src="{{d.now.weather.image}}" class="icon-weather" /></span>
+                <span ng-show="d.now.weather.min">{{d.now.weather.min}}°/{{d.now.weather.max}}°</span>
+                <span>{{d.totalParticipant}}</span>
+            </div>
+            <div class="col-md-1 move" ng-click="loadCal(days[0].next.id)">></div>
+        </div>
+
+        <!-- Loop on users -->
+        <div class="row" ng-repeat="u in users">
+            <div class="col-md-2"><a href="#" ng-click="deleteUser(days[0].now.id, u.name)"><i class="fas fa-trash-alt red"></i></a> {{u.name}}</div>
+            <div class="col-md-1" ng-repeat="d in u.days">
+                <section ng-class="d.style">
+                    <input type="checkbox" ng-checked="d.participate" ng-click="update(days[0].now.id, d.day, u.name, d.participate)" />
+                </section>
+            </div>
+        </div>
+
+        <!-- User input for creation -->
+        <div class="row">
+            <input type="text" value="" ng-model="userCreation" /> <a href="#" ng-click="createUser(days[0].now.id)"><i class="fas fa-plus-square plus"></i></a>
+        </div>
+    </div>
+    <script type="text/javascript" src="resources/js/lib/angular.min.js" ></script>
+    <script type="text/javascript" src="resources/js/calendrier.js" ></script>
+</body>
+</html>

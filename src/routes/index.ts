@@ -38,13 +38,27 @@ export class IndexRoute extends BaseRoute {
     router.post("/calendar/:day/adduser/:user", (req: Request, res: Response, next: NextFunction) => {
       var day = req.params.day;
       var user = req.params.user;
-      new IndexRoute().add(req, res, next, day, user);
+      var startDay = req.body.start;
+      new IndexRoute().add(req, res, next, day, user, startDay);
     });
 
     router.post("/calendar/:day/removeuser/:user", (req: Request, res: Response, next: NextFunction) => {
       var day = req.params.day;
       var user = req.params.user;
-      new IndexRoute().remove(req, res, next, day, user);
+      var startDay = req.body.start;
+      new IndexRoute().remove(req, res, next, day, user, startDay);
+    });
+
+    router.post("/user/:user", (req: Request, res: Response, next: NextFunction) => {
+      var user = req.params.user;
+      var startDay = req.body.start;
+      new IndexRoute().createUser(req, res, next, user, startDay);
+    });
+
+    router.post("/deleteuser/:user", (req: Request, res: Response, next: NextFunction) => {
+      var user = req.params.user;
+      var startDay = req.body.start;
+      new IndexRoute().deleteUser(req, res, next, user, startDay);
     });
   }
 
@@ -90,7 +104,25 @@ export class IndexRoute extends BaseRoute {
               }
             }
           }
-          res.json({ calendar: cal });
+          new UserDao().readAll(function(result: IUserModel[]){
+            var usersDays = [];
+            result.forEach(function(u){
+              var cUser = [];
+              cal.forEach(function(c){
+                var participate = false;
+                var style = "day missing";
+                c.users.forEach(function(uDay){
+                  if(uDay.nickName == u.nickName && uDay.participate){
+                    participate = true;
+                    style = "day present";
+                  }
+                });
+                cUser.push({day: c.now.id, "participate": participate, "style": style});
+              });
+              usersDays.push({"name": u.nickName, "days": cUser});
+            });
+            res.json({ calendar: cal, users: usersDays });
+          });
         });
         }).on("error", (err) => {
           console.log("Error: " + err.message);
@@ -99,17 +131,26 @@ export class IndexRoute extends BaseRoute {
 
   }
 
-  public add(req: Request, res: Response, next: NextFunction, day: string, user: string) {
+  public add(req: Request, res: Response, next: NextFunction, day: string, user: string, start: string) {
     new DayManager().suscribe(day, user);
-    new UserDao().readAll(function(result: IUserModel[]){
-      res.json({ status: "ok", users: result });
-    });
+    this.index(req, res, next, start);
   }
 
-  public remove(req: Request, res: Response, next: NextFunction, day: string, userId: string) {
+  public remove(req: Request, res: Response, next: NextFunction, day: string, userId: string, start: string) {
     new DayManager().unsuscribe(day, userId);
-    new UserDao().readAll(function(result: IUserModel[]){
-      res.json({ status: "ok", users: result });
-    });
+    this.index(req, res, next, start);
   }
+
+  public createUser(req: Request, res: Response, next: NextFunction, user: string, start: string) {
+    new UserDao().insert(user);
+    this.index(req, res, next, start);
+  }
+
+  public deleteUser(req: Request, res: Response, next: NextFunction, user: string, start: string) {
+    new DayManager().remove(user);
+    new UserDao().delete(user);
+    this.index(req, res, next, start);
+  }
+
+
 }

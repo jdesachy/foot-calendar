@@ -12,6 +12,8 @@ export class CalendarDay {
 
     public users: User[];
 
+    public totalParticipant: number;
+
     constructor(day: string, users : User[]){
         let dateformat: DateFormat;
         dateformat = new DateFormat();
@@ -27,6 +29,14 @@ export class CalendarDay {
         this.next = new Day(nextDate);
 
         this.users = users;
+        var sum = 0;
+        this.users.forEach(function(u){
+            if(u.participate){
+                sum++;
+            }
+        });
+
+        this.totalParticipant = sum;
     }
 
     private getOffset(date: Date, offset: number){

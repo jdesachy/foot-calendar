@@ -10,8 +10,8 @@ export class Day {
     weather: WeatherData;
     
     constructor(date: Date){
-        var days: string[] = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-        var months: string[] = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"];
+        var days: string[] = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+        var months: string[] = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jui", "Aou", "Sep", "Oct", "Nov", "Déc"];
     
         var dateformat = new DateFormat();
         this.id = dateformat.format(date);

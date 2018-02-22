@@ -1,0 +1,36 @@
+body{
+    font-family: "Times New Roman", Times, serif;
+}
+
+.red{
+    color: rgb(235, 0, 0);
+}
+
+.plus{
+    font-size: 2em;
+    margin-left: 5px;
+}
+
+.icon-weather{
+    height: 48px;
+}
+
+.present{
+    background-color: rgba(30, 255, 0, 0.342);
+}
+
+.missing{
+    background-color: rgba(226, 43, 43, 0.459);
+}
+
+.day{
+    height: 40px;
+    text-align: center;
+    padding-top: 10px;
+    margin: 1px;
+}
+
+.move:hover{
+    cursor: pointer;
+    background-color: lightgrey;
+}
