@@ -4,6 +4,7 @@ var calModule = angular.module('calModule', []);
 
 calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
 
+    $scope.popupClass= "popup-close";
     $scope.days = [];
     $scope.users = [];
     $scope.userCreation = "";
@@ -20,7 +21,6 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
             url: action,
             headers: {'Content-Type': 'application/json'}
           }).then(function successCallback(response) {
-              console.log(response);
               $scope.days = response.data.calendar;
               $scope.users = response.data.users;
               return 1;
@@ -35,8 +35,6 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     }
 
     $scope.update = function(startDay, day, user, participate){
-        console.log("day: " + day + ", user: " + user + ", participate: " + participate);
-
         var action = "";
         if(!participate){
             action = "http://localhost:8080/calendar/" + day + "/adduser/" + user; 
@@ -97,5 +95,56 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
                   return 0;
               }); 
         }
+    }
+    $scope.evaluateDay = "";
+    $scope.allowUsers = [];
+    $scope.ratings = [];
+    $scope.ratingUser="";
+    
+    $scope.openPopup = function(day){
+        if(day){
+            $scope.popupClass = "popup popup-open";
+            $scope.evaluateDay = day;
+            $http({
+                method: 'GET',
+                url: "http://localhost:8080/vote/" + day,
+                headers: {'Content-Type': 'application/json'}
+              }).then(function successCallback(response) {
+                    $scope.allowUsers = response.data.users;
+                    var players = [];
+                    players = response.data.players;
+                    for(let p of players){
+                        $scope.ratings.push({"name": p, "note": 10});
+                    }
+                    return 1;
+              }, function errorCallback(response) {
+                  return 0;
+              }); 
+        }
+    }
+
+    $scope.closePopup = function(){
+        $scope.popupClass = "popup popup-close";
+        $scope.evaluateDay = "";
+        $scope.allowUsers = [];
+        $scope.ratings = [];
+        $scope.ratingUser="";
+    }
+
+    $scope.sendNote = function(){
+        $http({
+            method: 'POST',
+            url: "http://localhost:8080/vote/"+$scope.evaluateDay+"/user/"+$scope.ratingUser,
+            data: {
+                rating: $scope.ratings
+            },
+            headers: {'Content-Type': 'application/json'}
+        }).then(function successCallback(response) {
+            $scope.closePopup();
+            return 1;
+        }, function errorCallback(response) {
+            console.log(response);
+            return 0;
+        }); 
     }
 }]);

@@ -83,15 +83,27 @@ export class DayManager {
         });
     }
 
-    remove(user: string){
+    remove(user: string, callback: (user: string) => void){
         const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
         let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
         
         var Day = connection.model<IDayModel>("Day", daySchema);
         Day.find({user: user}, function(err, dRes){
-            dRes.forEach(function(d){
-                d.remove();
-            });
+            var deleteDay = function(days: IDayModel[], index: number, callback: (user: string) => void){
+                days[index].remove(function(err, res){
+                    console.log("day "+ res.id +" for the user " + res.user + " deleted");
+                    if(index<days.length-1){
+                        deleteDay(days, ++index, callback);
+                    }else{
+                        callback(user);
+                    }
+                });
+            };
+            if(!err && dRes.length){
+                deleteDay(dRes, 0, callback);
+            }else{
+                callback(user);
+            }
         });
     }
 }

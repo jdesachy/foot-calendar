@@ -7,6 +7,7 @@ import { WeatherData } from "../api/weatherData";
 import { DateFormat } from "../api/dateformat";
 import { UserDao } from "../api/userdao";
 import { IUserModel } from "../models/user";
+import { VoteManager } from "../api/votemanager";
 
 /**
  * / route
@@ -35,6 +36,18 @@ export class IndexRoute extends BaseRoute {
       new IndexRoute().index(req, res, next, day);
     });
     
+    router.get("/vote/:day", (req: Request, res: Response, next: NextFunction) => {
+      var day = req.params.day;
+      new IndexRoute().initvote(req, res, next, day);
+    });
+
+    router.post("/vote/:day/user/:user", (req: Request, res: Response, next: NextFunction) => {
+      var day = req.params.day;
+      var user = req.params.user;
+      var players = req.body.rating;
+      new IndexRoute().vote(req, res, next, day, user, players);
+    });
+
     router.post("/calendar/:day/adduser/:user", (req: Request, res: Response, next: NextFunction) => {
       var day = req.params.day;
       var user = req.params.user;
@@ -147,10 +160,35 @@ export class IndexRoute extends BaseRoute {
   }
 
   public deleteUser(req: Request, res: Response, next: NextFunction, user: string, start: string) {
-    new DayManager().remove(user);
-    new UserDao().delete(user);
+    new DayManager().remove(user, function(user){
+      new VoteManager().remove(user, function(user){
+        new UserDao().delete(user);
+      });
+    });
+
     this.index(req, res, next, start);
   }
 
+  public initvote(req: Request, res: Response, next: NextFunction, day: string){
+    new VoteManager().init(day, function(users, players){
+      res.json({users: users, players: players});
+    });
+  }
 
+  public vote(req: Request, res: Response, next: NextFunction, day: string, user: string, players: any[]){
+    var manager = new VoteManager();
+    manager.evaluateAll(players, user, day, function(s, reason){
+      if(s>0){
+        manager.averageAll(function(code, result, error){
+          if(code>0){
+            res.json({status: code, result: result});
+          }else{
+            res.json({status: code, reason: error});
+          }
+        });
+      }else{
+        res.json({status: s, reason: reason});
+      }
+    });
+  }
 }

@@ -34,9 +34,41 @@
             </div>
         </div>
 
+        <!-- link to evaluate players -->
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-1" ng-repeat="d in days">
+                <a href="#" ng-click="openPopup(d.now.id)"><i class="fas fa-edit"></i></a>
+            </div>
+        </div>
+
         <!-- User input for creation -->
         <div class="row">
             <input type="text" value="" ng-model="userCreation" /> <a href="#" ng-click="createUser(days[0].now.id)"><i class="fas fa-plus-square plus"></i></a>
+        </div>
+
+        <div ng-class="popupClass">
+            <div class="popup-content">
+                <div class="close">
+                        <a href="#" ng-click="closePopup()"><i class="fas fa-window-close red"></i></a>
+                </div>
+                <div class="container">
+                    <h1>Vote pour la journée du {{evaluateDay}}</h1>
+                    <select ng-model="ratingUser">
+                        <option ng-repeat="u in allowUsers">{{u}}</option>
+                    </select>
+                    <section ng-repeat="r in ratings">
+                        <div class="row">
+                            <div class="col-md-6">{{r.name}}</div>
+                            <div class="col-md-6">
+                                <input type="number" ng-model="r.note" min="0" max="20" required/>
+                            </div>
+                        </div>
+                    </section>
+                    <a href="#" ng-click="sendNote();" class="save"><i class="fas fa-save"></i></a>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="resources/js/lib/angular.min.js" ></script>
