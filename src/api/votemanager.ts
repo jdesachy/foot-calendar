@@ -128,32 +128,28 @@ export class VoteManager {
                     var Rating = connection.model<IRatingModel>("Rating", ratingSchema);
                     
                     var average = function(users: IUserModel[], index: number, result: any[]){
-                        
-                        Rating.find({user: users[index].nickName},
-                            ['day','rating'], // Columns to Return
-                            {
-                                skip:0, // Starting Row
-                                limit:users.length*5, // Ending Row
-                                sort:{
-                                    createdAt: -1 //Sort by Date Added DESC
-                                }
-                            }, function(err, ratings){
+                        Rating.aggregate([{
+                            $match: {user: users[index].nickName}
+                        },{ 
+                            $group: { 
+                                _id: {day: '$dayDate', user: '$user'},
+                                average: {$avg: '$rating'}
+                            }
+                        },{
+                            $sort: {_id: -1}
+                        }, {
+                            $limit: 5
+                        }], function(err, res){
                             if(!err){
-                                var res = 0;
-                                if(ratings.length){
-                                    var averageDay = [];
-                                    ratings.forEach(function(r){
-                                        if(averageDay[r.day]){
-                                            averageDay[r.day].push(r.rating);
-                                        }else{
-
-                                        }
-                                        res = res + r.rating;
-                                    })
-                                    res = res/ratings.length;
+                                if(res.length){
+                                    var avg = 0;
+                                    res.forEach(function(r){
+                                        avg = avg + r.average;
+                                    });
+                                    avg = avg/res.length;
+                                    result.push({"name": users[index].nickName, "avg": avg});
                                 }
-                                result.push({"name": users[index], "average": res});
-                                if(index < users.length-1){
+                                if(index<users.length-1){
                                     average(users, ++index, result);
                                 }else{
                                     callback(1, result);
