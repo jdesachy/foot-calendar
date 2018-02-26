@@ -38,7 +38,7 @@ export class Calendar {
             var inc = 0;
             var callbackCalendar = function(cal: CalendarDay[], callback : (cal: CalendarDay[], users: any[])=>void) {
                 var actualDay = new CalendarDay(day, users);
-                if(cal.length <= 5){
+                if(cal.length <= 4){
                     cal.push(actualDay);
                     new Calendar().get(cal, callback, actualDay.next.id);
                 }else{
@@ -104,27 +104,27 @@ export class Calendar {
             
                             // UPDATE USER PARTICIPATION
                             result.forEach(function(u){
-                            var cUser = [];
-                            cal.forEach(function(c){
-                                var participate = false;
-                                var style = "day missing";
-                                c.users.forEach(function(uDay){
-                                if(uDay.nickName == u.nickName && uDay.participate){
-                                    participate = true;
-                                    style = "day present";
-                                }
+                                var cUser = [];
+                                cal.forEach(function(c){
+                                    var participate = false;
+                                    var style = "day missing";
+                                    c.users.forEach(function(uDay){
+                                    if(uDay.nickName == u.nickName && uDay.participate){
+                                        participate = true;
+                                        style = "day present";
+                                    }
+                                    });
+                                    cUser.push({day: c.now.id, "participate": participate, "style": style});
                                 });
-                                cUser.push({day: c.now.id, "participate": participate, "style": style});
-                            });
-            
-                            // UPDATE RATING
-                            var avg = 0;
-                            avgResult.forEach(function(avgRes){
-                                if(avgRes.name==u.nickName){
-                                avg = avgRes.avg;
-                                }
-                            });
-                            usersDays.push({"name": u.nickName, "days": cUser, "avg": avg});
+                
+                                // UPDATE RATING
+                                var avg = 0;
+                                avgResult.forEach(function(avgRes){
+                                    if(avgRes.name==u.nickName){
+                                    avg = avgRes.avg;
+                                    }
+                                });
+                                usersDays.push({"name": u.nickName, "days": cUser, "avg": avg});
                             });
                         }
                         callback(cal, usersDays);
@@ -137,6 +137,6 @@ export class Calendar {
     }
 
     buildUserList(){
-        
+
     }
 }

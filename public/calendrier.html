@@ -12,41 +12,76 @@
     <meta charset="utf-8">
 </head>
 <body ng-controller="calCtrl">
-    <div class="container">
+    <div class="container content">
         <div class="row">
-            <div class="col-md-2 move" ng-click="loadCal(days[0].previous.id)"><</div>
-            <div class="col-md-1" ng-repeat="d in days">
-                <span>{{d.now.fullName}}</span>
-                <span ng-show="d.now.weather.image"><img src="{{d.now.weather.image}}" class="icon-weather" /></span>
-                <span ng-show="d.now.weather.min">{{d.now.weather.min}}°/{{d.now.weather.max}}°</span>
-                <span>{{d.totalParticipant}}</span>
+            <div class="col-md-2 right">
+                <i class="fas fa-arrow-circle-left arrow" ng-click="loadCal(days[0].previous.id)"></i>
             </div>
-            <div class="col-md-1 move" ng-click="loadCal(days[0].next.id)">></div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-2 center" ng-repeat="d in days">
+                        <span class="day-title">{{d.now.fullName}}</span>
+                        <span ng-show="d.now.weather.image"><img src="{{d.now.weather.image}}" class="icon-weather" /></span><br/>
+                        <span ng-show="d.now.weather.min">{{d.now.weather.min}}°/{{d.now.weather.max}}°</span><br/>
+                        <div class="circle">{{d.totalParticipant}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <i class="fas fa-arrow-circle-right arrow" ng-click="loadCal(days[0].next.id)"></i>
+            </div>
         </div>
 
         <!-- Loop on users -->
         <div class="row" ng-repeat="u in users">
-            <div class="col-md-2"><a href="#" ng-click="deleteUser(days[0].now.id, u.name)"><i class="fas fa-trash-alt red"></i></a> {{u.name}} ({{u.avg | number:2}}/20)</div>
-            <div class="col-md-1" ng-repeat="d in u.days">
-                <section ng-class="d.style">
-                    <input type="checkbox" ng-checked="d.participate" ng-click="update(days[0].now.id, d.day, u.name, d.participate)" />
-                </section>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-2">
+                            <a href="#" ng-click="deleteUser(days[0].now.id, u.name)"><i class="fas fa-trash-alt red"></i></a> 
+                    </div>
+                    <div class="col-md-5">{{u.name}}</div>
+                    <div class="col-md-5 right">{{u.avg | number:1}}</div>
+                </div>
             </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-2" ng-repeat="d in u.days">
+                        <section ng-class="d.style">
+                            <input type="checkbox" ng-checked="d.participate" ng-click="update(days[0].now.id, d.day, u.name, d.participate)" />
+                        </section>
+                    </div>  
+                </div>    
+            </div>
+            <div class="col-md-1"></div>
         </div>
 
         <!-- link to evaluate players -->
         <div class="row">
             <div class="col-md-2"></div>
-            <div class="col-md-1" ng-repeat="d in days">
-                <a href="#" ng-click="openPopup(d.now.id)"><i class="fas fa-edit"></i></a>
+            <div class="col-md-9">
+                <div class="row m10 center">
+                    <div class="col-md-2" ng-repeat="d in days">
+                        <div ng-if="d.now.voteOpen == true">
+                            <a href="#" ng-click="openPopup(d.now.id)"><i class="fas fa-edit"></i></a>
+                        </div>
+                        <div ng-if="d.now.voteOpen == false">
+                                <a href="#" ng-click="openPopup(d.now.id)"><i class="fas fa-users"></i></a>
+                        </div>
+                    </div>
+                </div>    
             </div>
+            <div class="col-md-1"></div>
         </div>
 
         <!-- User input for creation -->
-        <div class="row">
-            <input type="text" value="" ng-model="userCreation" /> <a href="#" ng-click="createUser(days[0].now.id)"><i class="fas fa-plus-square plus"></i></a>
+        <div class="row footer">
+            <div class="col-md-2">
+                <input type="text" value="" ng-model="userCreation" size="8" /> <a href="#" ng-click="createUser(days[0].now.id)"><i class="fas fa-plus-square plus"></i></a>
+            </div>
+            <div class="col-md-10"></div>
         </div>
 
+        <!-- popup to rate players -->
         <div ng-class="popupClass">
             <div class="popup-content">
                 <div class="close">

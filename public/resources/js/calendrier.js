@@ -4,6 +4,7 @@ var calModule = angular.module('calModule', []);
 
 calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
 
+    $scope.now = new Date();
     $scope.popupClass= "popup-close";
     $scope.days = [];
     $scope.users = [];
@@ -141,6 +142,15 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
             headers: {'Content-Type': 'application/json'}
         }).then(function successCallback(response) {
             $scope.closePopup();
+            angular.forEach(response.data.result, function(value, key){
+                angular.forEach($scope.users, function(v, k){
+                    console.log("value: " + v.name +"#"+v.avg+", key: " + k);
+                    if(v.name==value.name){
+                        v.avg=value.avg;
+                    }
+                });
+                
+            });
             return 1;
         }, function errorCallback(response) {
             console.log(response);

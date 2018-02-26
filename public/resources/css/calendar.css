@@ -1,13 +1,70 @@
 body{
     font-family: "Times New Roman", Times, serif;
+    background: url("../img/gazon.jpg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.content{
+    margin-top: 20px;
+    padding-top: 20px;
+    border: solid 1px #0000;
+    box-shadow: 5px 5px 10px #000000;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+}
+
+.circle{
+    border: solid 1px #000000;
+    border-radius: 13px;
+    width: 25px;
+    height: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.day-title{
+    display: block;
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgba(235, 0, 0, 0.7);
 }
 
 .red{
     color: rgb(235, 0, 0);
 }
 
+.right{
+    text-align: right;
+}
+
+.center{
+    text-align: center;
+}
+
+.m10{
+    margin: 10px;
+}
+
+.arrow{
+    font-size: 1.5em;
+}
+.arrow:hover{
+    color: rgb(180, 180, 180);
+    cursor: pointer;
+}
+
+.footer{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
 .plus{
-    font-size: 2em;
+    font-size: 1.4em;
     margin-left: 5px;
 }
 
@@ -55,11 +112,7 @@ body{
 }
 
 .present{
-    background-color: rgba(30, 255, 0, 0.342);
-}
-
-.missing{
-    background-color: rgba(226, 43, 43, 0.459);
+    background: radial-gradient(rgb(30, 255, 0), transparent 100%);
 }
 
 .day{
@@ -67,9 +120,5 @@ body{
     text-align: center;
     padding-top: 10px;
     margin: 1px;
-}
-
-.move:hover{
-    cursor: pointer;
-    background-color: lightgrey;
+    border-radius: 30px;
 }
