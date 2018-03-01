@@ -7,6 +7,7 @@ import { DateFormat } from "../api/dateformat";
 import { IUserModel } from "../models/user";
 import { VoteManager } from "../api/votemanager";
 import { UserDao } from "../api/userdao";
+import { TeamGenerator } from "../api/teamgenerator";
 
 /**
  * / route
@@ -30,6 +31,11 @@ export class IndexRoute extends BaseRoute {
       new IndexRoute().index(req, res, next);
     });
 
+    router.get("/team/:day", (req: Request, res: Response, next: NextFunction) => {
+      var day = req.params.day;
+      new IndexRoute().team(req, res, next, day);
+    });
+    
     router.get("/calendar/:day?", (req: Request, res: Response, next: NextFunction) => {
       var day = req.params.day;
       new IndexRoute().index(req, res, next, day);
@@ -95,9 +101,20 @@ export class IndexRoute extends BaseRoute {
     }, day);
   }
 
+  public team(req: Request, res: Response, next: NextFunction, day: string){
+    new TeamGenerator().build(day, function(code, team1, team2, err){
+      if(code>0){
+        res.json({status: code, team1: team1, team2: team2});
+      }else{
+        res.json({status: code, error: err});
+      } 
+    }); 
+  }
+
   public add(req: Request, res: Response, next: NextFunction, day: string, user: string, start: string) {
-    new DayManager().suscribe(day, user);
-    this.index(req, res, next, start);
+    new DayManager().suscribe(day, user, function(){
+      new IndexRoute().index(req, res, next, start);
+    });
   }
 
   public remove(req: Request, res: Response, next: NextFunction, day: string, userId: string, start: string) {

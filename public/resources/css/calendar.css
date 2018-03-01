@@ -72,6 +72,10 @@ body{
     height: 48px;
 }
 
+.head-team{
+    padding-bottom: 20px;
+}
+
 .popup{
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -90,6 +94,17 @@ body{
 
 .popup-close{
     display: none;
+}
+
+.popup-content-foot {
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    background: url("../img/terrain_foot_bis.jpg") no-repeat center center; 
+    border: solid 5px #FFFFFF;
+    border-radius: 10px;
+    width: 600px;
+    height: 360px;
+    color: #FFFFFF;
 }
 
 .popup-content {

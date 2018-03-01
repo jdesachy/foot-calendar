@@ -5,7 +5,8 @@ var calModule = angular.module('calModule', []);
 calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
 
     $scope.now = new Date();
-    $scope.popupClass= "popup-close";
+    $scope.popupRatingClass= "popup-close";
+    $scope.popupTeamClass= "popup-close";
     $scope.days = [];
     $scope.users = [];
     $scope.userCreation = "";
@@ -102,9 +103,9 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     $scope.ratings = [];
     $scope.ratingUser="";
     
-    $scope.openPopup = function(day){
+    $scope.openRatingPopup = function(day){
         if(day){
-            $scope.popupClass = "popup popup-open";
+            $scope.popupRatingClass = "popup popup-open";
             $scope.evaluateDay = day;
             $http({
                 method: 'GET',
@@ -124,8 +125,33 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
         }
     }
 
-    $scope.closePopup = function(){
-        $scope.popupClass = "popup popup-close";
+    $scope.team1 = [];
+    $scope.team2 = [];
+    $scope.openTeamPopup = function(day){
+        if(day){
+            $scope.popupTeamClass = "popup popup-open";
+            $http({
+                method: 'GET',
+                url: "http://localhost:8080/team/" + day,
+                headers: {'Content-Type': 'application/json'}
+              }).then(function successCallback(response) {
+                    $scope.team1 = response.data.team1;
+                    $scope.team2 = response.data.team2;
+                    return 1;
+              }, function errorCallback(response) {
+                  return 0;
+              }); 
+        }
+    }
+
+    $scope.closeTeamPopup = function(){
+        $scope.popupTeamClass = "popup popup-close";
+        $scope.team1 = [];
+        $scope.team2 = [];
+    }
+
+    $scope.closeRatingPopup = function(){
+        $scope.popupRatingClass = "popup popup-close";
         $scope.evaluateDay = "";
         $scope.allowUsers = [];
         $scope.ratings = [];
@@ -141,10 +167,9 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
             },
             headers: {'Content-Type': 'application/json'}
         }).then(function successCallback(response) {
-            $scope.closePopup();
+            $scope.closeRatingPopup();
             angular.forEach(response.data.result, function(value, key){
                 angular.forEach($scope.users, function(v, k){
-                    console.log("value: " + v.name +"#"+v.avg+", key: " + k);
                     if(v.name==value.name){
                         v.avg=value.avg;
                     }

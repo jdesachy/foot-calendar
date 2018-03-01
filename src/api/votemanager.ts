@@ -148,6 +148,8 @@ export class VoteManager {
                                     });
                                     avg = avg/res.length;
                                     result.push({"name": users[index].nickName, "avg": avg});
+                                }else{
+                                    result.push({"name": users[index].nickName, "avg": 10});
                                 }
                                 if(index<users.length-1){
                                     average(users, ++index, result);

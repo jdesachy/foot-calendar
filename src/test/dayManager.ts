@@ -57,7 +57,7 @@ class DayManagerTest {
     @test("Test suscribe user for day")
     public suscribeDayExistingUser(){
         var dayManager = new DayManager();
-        dayManager.suscribe("01-01-2018", "toto");
+        dayManager.suscribe("01-01-2018", "toto", function(){});
     }
 
 }

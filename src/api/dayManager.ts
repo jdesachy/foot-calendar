@@ -23,7 +23,7 @@ export class DayManager {
         });
     }
 
-    public suscribe(day: string, user: string){
+    public suscribe(day: string, user: string, callback : () => void){
         const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
         let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
         
@@ -50,6 +50,7 @@ export class DayManager {
                             }else{
                                 console.log("user " + dayDB.user + " suscribe for day " + dayDB.id);
                             }
+                            callback();
                         });
                     });
                 }else{
@@ -60,6 +61,7 @@ export class DayManager {
                                 d.participate = true;
                                 d.save(function(err){
                                     console.log("Updating user "+ res[0].nickName + " suscribe for day " + d.id);
+                                    callback();
                                 });
                             }else{
                                 var dayDB = new Day({
@@ -72,8 +74,10 @@ export class DayManager {
                                     if(err){
                                         console.log("error suscribing user " + dayDB.user + " suscribe for day " + dayDB.id);
                                     }else{
+                                       
                                         console.log("user " + dayDB.user + " suscribe for day " + dayDB.id);
                                     }
+                                    callback();
                                 });
                             }
                         }                        
@@ -103,6 +107,24 @@ export class DayManager {
                 deleteDay(dRes, 0, callback);
             }else{
                 callback(user);
+            }
+        });
+    }
+
+    getUsersForDay(day: string, callback: (code: number, players: any[], err?: string) => void){
+        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
+        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        
+        var Day = connection.model<IDayModel>("Day", daySchema);
+        var players = [];
+        Day.find({id: day, participate: true}, function(err, res){
+            res.forEach(function(r){
+                players.push(r.user);
+            });
+            if(!err){
+                callback(1, players);
+            }else{
+                callback(-1, [], err);
             }
         });
     }

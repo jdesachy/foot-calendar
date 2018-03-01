@@ -62,10 +62,10 @@
                 <div class="row m10 center">
                     <div class="col-md-2" ng-repeat="d in days">
                         <div ng-if="d.now.voteOpen == true">
-                            <a href="#" ng-click="openPopup(d.now.id)"><i class="fas fa-edit"></i></a>
+                            <a href="#" ng-click="openRatingPopup(d.now.id)"><i class="fas fa-edit"></i></a>
                         </div>
                         <div ng-if="d.now.voteOpen == false">
-                                <a href="#" ng-click="openPopup(d.now.id)"><i class="fas fa-users"></i></a>
+                                <a href="#" ng-click="openTeamPopup(d.now.id)"><i class="fas fa-users"></i></a>
                         </div>
                     </div>
                 </div>    
@@ -82,10 +82,10 @@
         </div>
 
         <!-- popup to rate players -->
-        <div ng-class="popupClass">
+        <div ng-class="popupRatingClass">
             <div class="popup-content">
                 <div class="close">
-                        <a href="#" ng-click="closePopup()"><i class="fas fa-window-close red"></i></a>
+                        <a href="#" ng-click="closeRatingPopup()"><i class="fas fa-window-close red"></i></a>
                 </div>
                 <div class="container">
                     <h1>Vote pour la journée du {{evaluateDay}}</h1>
@@ -102,6 +102,38 @@
                     </section>
                     <a href="#" ng-click="sendNote();" class="save"><i class="fas fa-save"></i></a>
                     <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- popup team generation -->
+        <div ng-class="popupTeamClass">
+            <div class="popup-content-foot">
+                <div class="close">
+                        <a href="#" ng-click="closeTeamPopup()"><i class="fas fa-window-close red"></i></a>
+                </div>
+                <div class="container center">
+                    <h1>Génération d'équipe</h1>
+                    <div class="row head-team">
+                        <div class="col-md-6 center">
+                            Equipe 1
+                        </div>
+                        <div class="col-md-6 center">
+                            Equipe 2
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 center">
+                            <div ng-repeat="p in team1.players">
+                                {{p.name}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 center">
+                            <div ng-repeat="p in team2.players">
+                                {{p.name}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
