@@ -52,7 +52,7 @@ export class CalendarDay {
         var yearN = Number(values[2]);
         var monthN = Number(values[1])-1; //le mois est décalé de 1
         var dayN = Number(values[0]);
-        return new Date(yearN, monthN, dayN, 12, 0, 0, 0);
+        return new Date(yearN, monthN, dayN, 14, 0, 0, 0);
     }
 
 }

@@ -34,6 +34,10 @@ body{
     background-color: rgba(235, 0, 0, 0.7);
 }
 
+.white{
+    color: #FFFFFF;
+}
+
 .red{
     color: rgb(235, 0, 0);
 }
@@ -73,7 +77,27 @@ body{
 }
 
 .head-team{
-    padding-bottom: 20px;
+    padding: 2px;
+    height: 28px;
+    background: radial-gradient(rgb(38, 0, 255), rgb(11, 0, 77));
+    border-radius: 14px;
+    margin: 20px 5px 4px 5px;
+    color: #FFFFFF;
+}
+
+.note-player{
+    width: 55px;
+    height: 30px;
+    font-size: 14px;
+}
+
+.team-player{
+    height: 28px;
+    background: radial-gradient(rgb(243, 0, 93), rgb(73, 0, 28));
+    border-radius: 14px;
+    margin: 4px 5px 4px 20px;
+    padding: 2px;
+    color: #FFFFFF;
 }
 
 .popup{
@@ -98,32 +122,28 @@ body{
 
 .popup-content-foot {
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
+    padding: 40px;
     background: url("../img/terrain_foot_bis.jpg") no-repeat center center; 
     border: solid 5px #FFFFFF;
     border-radius: 10px;
     width: 600px;
     height: 360px;
-    color: #FFFFFF;
-}
-
-.popup-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
 }
 
 .close {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    position: relative;
+    top: -58px;
+    right: -58px;
 }
 
 .save{
-    float: right;
-    font-size: 48px;
+    font-size: 28px;
+    position: relative;
+    top: 270px;
+    left: 515px;
 }
 
 .present{
