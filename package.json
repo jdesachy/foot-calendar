@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Calendrier pour le foot",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon ./bin/www",
     "grunt": "grunt",
-    "test": "mocha dist/test",
     "start": "node ./bin/www"
   },
   "main": "./bin/www",
