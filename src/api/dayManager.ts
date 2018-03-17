@@ -4,12 +4,12 @@ import { IUserModel } from "../models/user";
 import { userSchema } from "../schemas/user";
 import { IDayModel } from "../models/day";
 import { daySchema } from "../schemas/day";
+import { ServerEnv } from "../serverEnv";
 
 export class DayManager {
 
     public unsuscribe(day: string, user: string){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var Day = connection.model<IDayModel>("Day", daySchema);
 
@@ -24,8 +24,7 @@ export class DayManager {
     }
 
     public suscribe(day: string, user: string, callback : () => void){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var User = connection.model<IUserModel>("User", userSchema);
         User.find({nickName: user}, function(err, res){
@@ -88,8 +87,7 @@ export class DayManager {
     }
 
     remove(user: string, callback: (user: string) => void){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var Day = connection.model<IDayModel>("Day", daySchema);
         Day.find({user: user}, function(err, dRes){
@@ -112,8 +110,7 @@ export class DayManager {
     }
 
     getUsersForDay(day: string, callback: (code: number, players: any[], err?: string) => void){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var Day = connection.model<IDayModel>("Day", daySchema);
         var players = [];

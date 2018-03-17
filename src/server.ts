@@ -20,6 +20,7 @@ import { IUserModel } from "./models/user"; //import IUserModel
 //schemas
 import { userSchema } from "./schemas/user"; //import userSchema
 
+import { ServerEnv } from "./serverEnv";
 /**
  * The server.
  *
@@ -83,7 +84,6 @@ export class Server {
     * @method config
     */
   public config() {
-    const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
 
     //add static paths
     this.app.use(express.static(path.join(__dirname, "public")));
@@ -114,7 +114,7 @@ export class Server {
     mongoose.Promise = global.Promise;
 
     //connect to mongoose
-    let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+    let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
 
     //create models
     this.model.user = connection.model<IUserModel>("User", userSchema);

@@ -9,6 +9,7 @@ import { daySchema } from "../schemas/day";
 import { UserDao } from "../api/userdao";
 import { WeatherData } from "../api/weatherData";
 import { VoteManager } from "../api/votemanager";
+import { ServerEnv } from "../serverEnv";
 
 export class Calendar {
 
@@ -24,8 +25,7 @@ export class Calendar {
             day = dateformat.format(new Date());
         }
 
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         var Day = connection.model<IDayModel>("Day", daySchema);
         var query = Day.find({id: day}, function(err, daysDB){
             if(err){

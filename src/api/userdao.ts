@@ -2,12 +2,12 @@ import mongoose = require("mongoose");
 import { IUser } from "../interfaces/user";
 import { IUserModel } from "../models/user";
 import { userSchema } from "../schemas/user";
+import { ServerEnv } from "../serverEnv";
 
 export class UserDao {
 
     readAll(callback: (result: IUserModel[]) => void){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var User = connection.model<IUserModel>("User", userSchema);
         User.find(function(err, res){
@@ -16,8 +16,7 @@ export class UserDao {
     }
 
     insert(user: string){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var User = connection.model<IUserModel>("User", userSchema);
         User.find({nickName: user}, function(err, res){
@@ -35,8 +34,7 @@ export class UserDao {
     }
 
     delete(user: string){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var User = connection.model<IUserModel>("User", userSchema);
         User.findOne({nickName: user}, function(err, res){

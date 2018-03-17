@@ -6,12 +6,12 @@ import { IDayModel } from "../models/day";
 import { daySchema } from "../schemas/day";
 import { IRatingModel } from "../models/rating";
 import { ratingSchema } from "../schemas/rating";
+import { ServerEnv } from "../serverEnv";
 
 export class VoteManager {
 
     init(day: string, callback: (missingUsers: string[], players: string[]) => void){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         var Rating = connection.model<IRatingModel>("Rating", ratingSchema);        
         Rating.find({day: day}, function(err, ratings){
             if(!err){
@@ -55,8 +55,7 @@ export class VoteManager {
     }
 
     evaluateAll(players: any[], user: string, day: string, callback: (status: number, reason: string) => void){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         
         var User = connection.model<IUserModel>("User", userSchema);
         User.findOne({nickName: user}, function(err, res){
@@ -118,8 +117,7 @@ export class VoteManager {
     }
 
     averageAll(callback: (code: number, result?: any[], problem?: string) => void){
-        const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-        let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+        let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
         var User = connection.model<IUserModel>("User", userSchema);
 
         User.find(function(err, u){
@@ -173,8 +171,7 @@ export class VoteManager {
 
     remove(user: string, callback: (user: string)=>void){
         if(user){
-            const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-            let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+            let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
             var Rating = connection.model<IRatingModel>("Rating", ratingSchema);
             Rating.find({user: user}, function(err, ratings){
                 if(!err && ratings.length){

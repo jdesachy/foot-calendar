@@ -8,6 +8,7 @@
     "test": "mocha dist/test",
     "start": "node ./bin/www"
   },
+  "main": "./bin/www",
   "author": "Desachy",
   "license": "ISC",
   "dependencies": {

@@ -3,6 +3,7 @@ import { IUser } from "../interfaces/user";
 import { IUserModel } from "../models/user";
 import { userSchema } from "../schemas/user";
 import mongoose = require("mongoose");
+import { ServerEnv } from "../serverEnv";
 
 @suite
 class UserTest {
@@ -21,8 +22,7 @@ class UserTest {
     mongoose.Promise = global.Promise;
 
     //connect to mongoose and create model
-    const MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
-    let connection: mongoose.Connection = mongoose.createConnection(MONGODB_CONNECTION);
+    let connection: mongoose.Connection = mongoose.createConnection(ServerEnv.getMongoDBConnection());
     UserTest.User = connection.model<IUserModel>("User", userSchema);
 
     //require chai and use should() assertions
