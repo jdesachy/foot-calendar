@@ -1,7 +1,7 @@
 {
-  "name": "myapp",
+  "name": "foot",
   "version": "1.0.0",
-  "description": "Appli de test",
+  "description": "Calendrier pour le foot",
   "scripts": {
     "dev": "NODE_ENV=development nodemon ./bin/www",
     "grunt": "grunt",
