@@ -46,6 +46,10 @@ export class IndexRoute extends BaseRoute {
       new IndexRoute().initvote(req, res, next, day);
     });
 
+    router.get("/pagecount", (req: Request, res: Response, next: NextFunction) => {
+      new IndexRoute().pagecount(req, res, next);
+    });
+
     router.post("/vote/:day/user/:user", (req: Request, res: Response, next: NextFunction) => {
       var day = req.params.day;
       var user = req.params.user;
@@ -135,6 +139,10 @@ export class IndexRoute extends BaseRoute {
     });
 
     this.index(req, res, next, start);
+  }
+
+  public pagecount(req: Request, res: Response, next: NextFunction){
+    res.json({pageCount: 1});
   }
 
   public initvote(req: Request, res: Response, next: NextFunction, day: string){

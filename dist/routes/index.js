@@ -24,6 +24,9 @@ class IndexRoute extends route_1.BaseRoute {
             var day = req.params.day;
             new IndexRoute().initvote(req, res, next, day);
         });
+        router.get("/pagecount", (req, res, next) => {
+            new IndexRoute().pagecount(req, res, next);
+        });
         router.post("/vote/:day/user/:user", (req, res, next) => {
             var day = req.params.day;
             var user = req.params.user;
@@ -95,6 +98,9 @@ class IndexRoute extends route_1.BaseRoute {
             });
         });
         this.index(req, res, next, start);
+    }
+    pagecount(req, res, next) {
+        res.json({ pageCount: 1 });
     }
     initvote(req, res, next, day) {
         new votemanager_1.VoteManager().init(day, function (users, players) {
