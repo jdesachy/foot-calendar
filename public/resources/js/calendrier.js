@@ -4,6 +4,9 @@ var calModule = angular.module('calModule', []);
 
 calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
 
+    var host = "http://nodejs-mongo-persistent-foot-calendar.7e14.starter-us-west-2.openshiftapps.com/";
+    //var host = "http://localhost:8080/";
+    
     $scope.now = new Date();
     $scope.popupRatingClass= "popup-close";
     $scope.popupTeamClass= "popup-close";
@@ -14,9 +17,9 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     var callBackoffice = function(day){
         var action = "";
         if(day){
-            action = "/calendar/"+day;
+            action = hotst + "calendar/" + day;
         }else{
-            action = "/";
+            action = host;
         }
         $http({
             method: 'GET',
@@ -39,9 +42,9 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     $scope.update = function(startDay, day, user, participate){
         var action = "";
         if(!participate){
-            action = "/calendar/" + day + "/adduser/" + user; 
+            action = hotst + "calendar/" + day + "/adduser/" + user; 
         }else{
-            action = "/calendar/" + day + "/removeuser/" + user;
+            action = hotst + "calendar/" + day + "/removeuser/" + user;
         }
         
         $http({
@@ -64,7 +67,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
         if($scope.userCreation != ""){
             $http({
                 method: 'POST',
-                url: "/user/"+$scope.userCreation,
+                url: hotst + "user/"+$scope.userCreation,
                 data: {
                     start: startDay
                 },
@@ -84,7 +87,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
         if(user != ""){
             $http({
                 method: 'POST',
-                url: "/deleteuser/"+user,
+                url: hotst + "deleteuser/"+user,
                 data: {
                     start: startDay
                 },
@@ -109,7 +112,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
             $scope.evaluateDay = day;
             $http({
                 method: 'GET',
-                url: "/vote/" + day,
+                url: hotst + "vote/" + day,
                 headers: {'Content-Type': 'application/json'}
               }).then(function successCallback(response) {
                     $scope.allowUsers = response.data.users;
@@ -132,7 +135,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
             $scope.popupTeamClass = "popup popup-open";
             $http({
                 method: 'GET',
-                url: "/team/" + day,
+                url: hotst + "team/" + day,
                 headers: {'Content-Type': 'application/json'}
               }).then(function successCallback(response) {
                     $scope.team1 = response.data.team1;
@@ -161,7 +164,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     $scope.sendNote = function(){
         $http({
             method: 'POST',
-            url: "/vote/"+$scope.evaluateDay+"/user/"+$scope.ratingUser,
+            url: hotst + "vote/"+$scope.evaluateDay+"/user/"+$scope.ratingUser,
             data: {
                 rating: $scope.ratings
             },
