@@ -1,0 +1,159 @@
+body{
+    font-family: "Times New Roman", Times, serif;
+    background: url("../img/gazon.jpg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.content{
+    margin-top: 20px;
+    padding-top: 20px;
+    border: solid 1px #0000;
+    box-shadow: 5px 5px 10px #000000;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+}
+
+.circle{
+    border: solid 1px #000000;
+    border-radius: 13px;
+    width: 25px;
+    height: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.day-title{
+    display: block;
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgba(235, 0, 0, 0.7);
+}
+
+.white{
+    color: #FFFFFF;
+}
+
+.red{
+    color: rgb(235, 0, 0);
+}
+
+.right{
+    text-align: right;
+}
+
+.center{
+    text-align: center;
+}
+
+.m10{
+    margin: 10px;
+}
+
+.arrow{
+    font-size: 1.5em;
+}
+.arrow:hover{
+    color: rgb(180, 180, 180);
+    cursor: pointer;
+}
+
+.footer{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.plus{
+    font-size: 1.4em;
+    margin-left: 5px;
+}
+
+.icon-weather{
+    height: 48px;
+}
+
+.head-team{
+    padding: 2px;
+    height: 28px;
+    background: radial-gradient(rgb(38, 0, 255), rgb(11, 0, 77));
+    border-radius: 14px;
+    margin: 20px 5px 4px 5px;
+    color: #FFFFFF;
+}
+
+.note-player{
+    width: 55px;
+    height: 30px;
+    font-size: 14px;
+}
+
+.team-player{
+    height: 28px;
+    background: radial-gradient(rgb(243, 0, 93), rgb(73, 0, 28));
+    border-radius: 14px;
+    margin: 4px 5px 4px 20px;
+    padding: 2px;
+    color: #FFFFFF;
+}
+
+.popup{
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.popup-open{
+    display: block;
+}
+
+.popup-close{
+    display: none;
+}
+
+.popup-content-foot {
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 40px;
+    background: url("../img/terrain_foot_bis.jpg") no-repeat center center; 
+    border: solid 5px #FFFFFF;
+    border-radius: 10px;
+    width: 600px;
+    height: 360px;
+}
+
+.close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: relative;
+    top: -58px;
+    right: -58px;
+}
+
+.save{
+    font-size: 28px;
+    position: relative;
+    top: 270px;
+    left: 515px;
+}
+
+.present{
+    background: radial-gradient(rgb(30, 255, 0), transparent 100%);
+}
+
+.day{
+    height: 40px;
+    text-align: center;
+    padding-top: 10px;
+    margin: 1px;
+    border-radius: 30px;
+}

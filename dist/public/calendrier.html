@@ -1,0 +1,140 @@
+<html ng-app="calApp">
+<head>
+    <script type="text/javascript" src="resources/js/lib/jquery-3.1.1.min.js" ></script>
+    <script type="text/javascript" src="resources/js/lib/bootstrap.min.js" ></script>
+    <script type="text/javascript" src="resources/js/lib/bootstrap.bundle.min.js" ></script>
+
+    <link rel="stylesheet" type="text/css" href="resources/css/calendar.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/fontawesome/fontawesome-all.min.css">
+    <meta charset="utf-8">
+</head>
+<body ng-controller="calCtrl">
+    <div class="container content">
+        <div class="row">
+            <div class="col-md-2 right">
+                <i class="fas fa-arrow-circle-left arrow" ng-click="loadCal(days[0].previous.id)"></i>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-2 center" ng-repeat="d in days">
+                        <span class="day-title">{{d.now.fullName}}</span>
+                        <span ng-show="d.now.weather.image"><img src="{{d.now.weather.image}}" class="icon-weather" /></span><br/>
+                        <span ng-show="d.now.weather.min">{{d.now.weather.min}}°/{{d.now.weather.max}}°</span><br/>
+                        <div class="circle">{{d.totalParticipant}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <i class="fas fa-arrow-circle-right arrow" ng-click="loadCal(days[0].next.id)"></i>
+            </div>
+        </div>
+
+        <!-- Loop on users -->
+        <div class="row" ng-repeat="u in users">
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-2">
+                            <a href="#" ng-click="deleteUser(days[0].now.id, u.name)"><i class="fas fa-trash-alt red"></i></a> 
+                    </div>
+                    <div class="col-md-5">{{u.name}}</div>
+                    <div class="col-md-5 right">{{u.avg | number:1}}</div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-2" ng-repeat="d in u.days">
+                        <section ng-class="d.style">
+                            <input type="checkbox" ng-checked="d.participate" ng-click="update(days[0].now.id, d.day, u.name, d.participate)" />
+                        </section>
+                    </div>  
+                </div>    
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <!-- link to evaluate players -->
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-9">
+                <div class="row m10 center">
+                    <div class="col-md-2" ng-repeat="d in days">
+                        <div ng-if="d.now.voteOpen == true">
+                            <a href="#" ng-click="openRatingPopup(d.now.id)"><i class="fas fa-edit"></i></a>
+                        </div>
+                        <div ng-if="d.now.voteOpen == false">
+                                <a href="#" ng-click="openTeamPopup(d.now.id)"><i class="fas fa-users"></i></a>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <!-- User input for creation -->
+        <div class="row footer">
+            <div class="col-md-2">
+                <input type="text" value="" ng-model="userCreation" size="8" /> <a href="#" ng-click="createUser(days[0].now.id)"><i class="fas fa-plus-square plus"></i></a>
+            </div>
+            <div class="col-md-10"></div>
+        </div>
+
+        <!-- popup to rate players -->
+        <div ng-class="popupRatingClass">
+            <div class="popup-content-foot">
+                <div class="close">
+                        <a href="#" ng-click="closeRatingPopup()"><i class="fas fa-window-close red"></i></a>
+                </div>
+                <a href="#" ng-click="sendNote();" class="save"><i class="fas fa-save"></i></a>
+                <div class="container center">
+                    <select ng-model="ratingUser">
+                        <option ng-repeat="u in allowUsers">{{u}}</option>
+                    </select>
+                   
+                    <div class="row white">
+                        <div class="col-md-2" ng-repeat="r in ratings">
+                            <label for="{{r.name}}">{{r.name}}</label>
+                            <input id="{{r.name}}" type="number" ng-model="r.note" min="0" max="21" class="note-player" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- popup team generation -->
+        <div ng-class="popupTeamClass">
+            <div class="popup-content-foot">
+                <div class="close">
+                        <a href="#" ng-click="closeTeamPopup()"><i class="fas fa-window-close red"></i></a>
+                </div>
+                <div class="container center">
+                    <div class="row head-team">
+                        <div class="col-md-6">
+                            Equipe 1
+                        </div>
+                        <div class="col-md-6">
+                            Equipe 2
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="team-player" ng-repeat="p in team1.players">
+                                {{p.name}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="team-player" ng-repeat="p in team2.players">
+                                {{p.name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="resources/js/lib/angular.min.js" ></script>
+    <script type="text/javascript" src="resources/js/calendrier.js" ></script>
+</body>
+</html>
