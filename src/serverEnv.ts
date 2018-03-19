@@ -1,11 +1,30 @@
 export class ServerEnv{
 
     static getMongoDBConnection(): string {
-        let MONGODB_CONNECTION: string = "mongodb://localhost:27017/test";
+        return this.getMongoDBUrl();
+    }
 
-        if(process.env.OPENSHIFT_MONGODB_DB_URL){
-            MONGODB_CONNECTION = process.env.OPENSHIFT_MONGODB_DB_URL + process.env.MONGODB_DATABASE;
+    static getMongoDBUrl(): string {
+        let mongoURL = "";
+
+        if (process.env.DATABASE_SERVICE_NAME) {
+            var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
+                mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
+                mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'],
+                mongoDatabase = process.env[mongoServiceName + '_DATABASE'],
+                mongoPassword = process.env[mongoServiceName + '_PASSWORD'],
+                mongoUser = process.env[mongoServiceName + '_USER'];
+          
+            if (mongoHost && mongoPort && mongoDatabase) {
+              if (mongoUser && mongoPassword) {
+                mongoURL += mongoUser + ':' + mongoPassword + '@';
+              }
+              mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;          
+            } 
+        }else{
+            mongoURL = "mongodb://localhost:27017/test";
         }
-        return MONGODB_CONNECTION;
+        console.log("connecting to " + mongoURL);
+        return mongoURL;
     }
 }
