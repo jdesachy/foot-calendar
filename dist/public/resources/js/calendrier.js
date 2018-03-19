@@ -4,8 +4,8 @@ var calModule = angular.module('calModule', []);
 
 calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
 
-    //var host = "http://nodejs-mongo-persistent-foot-calendar.7e14.starter-us-west-2.openshiftapps.com/";
-    var host = "http://localhost:8080/";
+    var host = "http://nodejs-mongo-persistent-foot-calendar.7e14.starter-us-west-2.openshiftapps.com/";
+    //var host = "http://localhost:8080/";
     
     $scope.now = new Date();
     $scope.popupRatingClass= "popup-close";
