@@ -17,7 +17,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     var callBackoffice = function(day){
         var action = "";
         if(day){
-            action = hotst + "calendar/" + day;
+            action = host + "calendar/" + day;
         }else{
             action = host;
         }
@@ -42,9 +42,9 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     $scope.update = function(startDay, day, user, participate){
         var action = "";
         if(!participate){
-            action = hotst + "calendar/" + day + "/adduser/" + user; 
+            action = host + "calendar/" + day + "/adduser/" + user; 
         }else{
-            action = hotst + "calendar/" + day + "/removeuser/" + user;
+            action = host + "calendar/" + day + "/removeuser/" + user;
         }
         
         $http({
@@ -67,7 +67,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
         if($scope.userCreation != ""){
             $http({
                 method: 'POST',
-                url: hotst + "user/"+$scope.userCreation,
+                url: host + "user/"+$scope.userCreation,
                 data: {
                     start: startDay
                 },
@@ -87,7 +87,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
         if(user != ""){
             $http({
                 method: 'POST',
-                url: hotst + "deleteuser/"+user,
+                url: host + "deleteuser/"+user,
                 data: {
                     start: startDay
                 },
@@ -112,7 +112,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
             $scope.evaluateDay = day;
             $http({
                 method: 'GET',
-                url: hotst + "vote/" + day,
+                url: host + "vote/" + day,
                 headers: {'Content-Type': 'application/json'}
               }).then(function successCallback(response) {
                     $scope.allowUsers = response.data.users;
@@ -135,7 +135,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
             $scope.popupTeamClass = "popup popup-open";
             $http({
                 method: 'GET',
-                url: hotst + "team/" + day,
+                url: host + "team/" + day,
                 headers: {'Content-Type': 'application/json'}
               }).then(function successCallback(response) {
                     $scope.team1 = response.data.team1;
@@ -164,7 +164,7 @@ calModule.controller('calCtrl', ['$scope', '$http', function($scope, $http){
     $scope.sendNote = function(){
         $http({
             method: 'POST',
-            url: hotst + "vote/"+$scope.evaluateDay+"/user/"+$scope.ratingUser,
+            url: host + "vote/"+$scope.evaluateDay+"/user/"+$scope.ratingUser,
             data: {
                 rating: $scope.ratings
             },

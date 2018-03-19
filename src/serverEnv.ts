@@ -24,7 +24,6 @@ export class ServerEnv{
         }else{
             mongoURL = "mongodb://localhost:27017/test";
         }
-        console.log("connecting to " + mongoURL);
         return mongoURL;
     }
 }
